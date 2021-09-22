@@ -13,29 +13,27 @@ public class Player {
         this.board = board;
     }
 
-    public void putToken(){
+    public GameState putToken(){
         Coordinate coordinate;
         Error error;
         do{
-            coordinate = this.getCoordinate(Message.ENTER_COORDINATE_TO_PUT);
-            error = this.getPutTokenError(coordinate);
+            coordinate = this.readColumn(Message.ENTER_COORDINATE_TO_PUT);
+            error = this.isValidColumn(coordinate.getColumn());
         }while(!error.isNull());
-        this.board.putToken(coordinate, this.color);
+        return this.board.putToken(coordinate.getColumn(), this.color);
     }
 
-    private Coordinate getCoordinate(Message message){
+    private Coordinate readColumn(Message message){
         assert message != null;
 
         Coordinate coordinate = new Coordinate();
-        coordinate.read(message.toString());
+        coordinate.readColumn(message.toString());
         return coordinate;
     }
 
-    private Error getPutTokenError(Coordinate coordinate) {
-        assert coordinate != null;
-
+    private Error isValidColumn(int column) {
         Error error = Error.NULL;
-        if (!this.board.isEmpty(coordinate)) {
+        if (!this.board.isEmpty(new Coordinate(0, column))) {
             error = Error.NOT_EMPTY;
         }
         error.println();

@@ -27,7 +27,7 @@ class Coordinate extends RectangleBoundedCoordinate {
 
     @Override
     protected String getErrorMessage() {
-        return Error.WRONG_COORDINATES.toString();
+        return Error.WRONG_COLUMN.toString();
     }
 
     @Override

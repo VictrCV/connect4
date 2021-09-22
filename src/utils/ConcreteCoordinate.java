@@ -63,10 +63,9 @@ public class ConcreteCoordinate implements Coordinate {
         return this.row + this.column == ((ConcreteCoordinate) coordinate).row + ((ConcreteCoordinate) coordinate).column;
     }
 
-    protected void read(String title) {
+    protected void readColumn(String title) {
         Console console = Console.getInstance();
         console.println(title);
-        this.row = console.readInt(ConcreteCoordinate.ROW) - 1;
         this.column = console.readInt(ConcreteCoordinate.COLUMN) - 1;
     }
 

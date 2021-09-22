@@ -21,8 +21,7 @@ public class Connect4 {
         this.board.print();
         GameState gameState;
         do{
-            this.players[this.activePlayer].putToken();
-            gameState = this.board.isFinish(this.getActiveColor());
+            gameState = this.players[this.activePlayer].putToken();
             if (gameState == GameState.NOT_FINISH){
                 this.activePlayer = this.getNextPlayer();
             }
