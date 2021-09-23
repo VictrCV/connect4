@@ -1,19 +1,18 @@
 package utils;
 
-public class ConcreteCoordinate implements Coordinate {
+public class BaseCoordinate {
 
     protected int row;
     protected int column;
 
-    protected ConcreteCoordinate() {
+    protected BaseCoordinate() {
     }
 
-    protected ConcreteCoordinate(int row, int column) {
+    protected BaseCoordinate(int row, int column) {
         this.row = row;
         this.column = column;
     }
 
-    @Override
     public boolean isNull() {
         return false;
     }
@@ -43,7 +42,7 @@ public class ConcreteCoordinate implements Coordinate {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        ConcreteCoordinate other = (ConcreteCoordinate) obj;
+        BaseCoordinate other = (BaseCoordinate) obj;
         if (column != other.column)
             return false;
         return row == other.row;

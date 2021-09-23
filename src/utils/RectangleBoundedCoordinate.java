@@ -2,10 +2,10 @@ package utils;
 
 public abstract class RectangleBoundedCoordinate {
 
-    private Coordinate coordinate;
+    private BaseCoordinate coordinate;
 
     public RectangleBoundedCoordinate() {
-        this.coordinate = NullCoordinate.getInstance();
+        this.coordinate = new BaseCoordinate();
     }
 
     public boolean isNull() {
@@ -13,7 +13,7 @@ public abstract class RectangleBoundedCoordinate {
     }
 
     public RectangleBoundedCoordinate(int row, int column) {
-        this.coordinate = new ConcreteCoordinate(row, column);
+        this.coordinate = new BaseCoordinate(row, column);
 
         assert this.isValid();
     }
@@ -21,7 +21,7 @@ public abstract class RectangleBoundedCoordinate {
     public boolean isValid() {
         assert !this.coordinate.isNull();
 
-        ConcreteCoordinate concreteCoordinate = (ConcreteCoordinate) this.coordinate;
+        BaseCoordinate concreteCoordinate = this.coordinate;
         return this.getRowLimits().isIncluded(concreteCoordinate.getRow())
                 && this.getColumnLimits().isIncluded(concreteCoordinate.getColumn());
     }
@@ -43,13 +43,13 @@ public abstract class RectangleBoundedCoordinate {
     public int getRow() {
         assert !this.coordinate.isNull();
 
-        return ((ConcreteCoordinate) this.coordinate).getRow();
+        return (this.coordinate).getRow();
     }
 
     public int getColumn() {
         assert !this.coordinate.isNull();
 
-        return ((ConcreteCoordinate) this.coordinate).getColumn();
+        return (this.coordinate).getColumn();
     }
 
 }

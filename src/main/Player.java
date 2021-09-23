@@ -7,7 +7,7 @@ public class Player {
     private Color color;
     private Board board;
 
-    public Player(Color color, Board board){
+    public Player(Color color, Board board) {
         assert !color.isNull();
         assert board != null;
 
@@ -15,30 +15,30 @@ public class Player {
         this.board = board;
     }
 
-    public GameState putToken(){
+    public GameState putToken() {
         int column;
         Console console = Console.getInstance();
         Error error;
-        do{
+        do {
             column = console.readInt(this.color + Message.ENTER_COORDINATE_TO_PUT.toString()) - 1;
             error = this.isValidColumn(column);
-        }while(!error.isNull());
+            error.println();
+        } while (!error.isNull());
         return this.board.putToken(column, this.color);
     }
 
     private Error isValidColumn(int column) {
-        Error error = Error.NULL;
         Coordinate coordinate = new Coordinate(0, column);
         if (!coordinate.isValid()) {
-            error = Error.WRONG_COLUMN;
-        } else if (this.board.isOccupied(coordinate)){
-            error = Error.NOT_EMPTY;
+            return Error.WRONG_COLUMN;
         }
-        error.println();
-        return error;
+        if (this.board.isOccupied(coordinate)) {
+            return Error.NOT_EMPTY;
+        }
+        return Error.NULL;
     }
 
-    public void printWinner(){
+    public void printWinner() {
         Message.PLAYER_WIN.println(this.color.name());
     }
 

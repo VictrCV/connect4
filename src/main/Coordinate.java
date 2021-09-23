@@ -5,7 +5,7 @@ import utils.RectangleBoundedCoordinate;
 class Coordinate extends RectangleBoundedCoordinate {
 
     public static final int ROWS = 6;
-    public static  final int COLUMNS = 7;
+    public static final int COLUMNS = 7;
 
     Coordinate() {
         super();

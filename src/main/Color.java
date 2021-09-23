@@ -8,7 +8,7 @@ enum Color {
     O,
     NULL;
 
-    static Color get(int ordinal){
+    static Color get(int ordinal) {
         assert ordinal >= 0 && ordinal < Color.NULL.ordinal();
 
         return Color.values()[ordinal];

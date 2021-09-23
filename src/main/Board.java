@@ -20,13 +20,13 @@ class Board {
     GameState putToken(int column, Color color) {
         Coordinate coordinate;
         Error error;
-        int i = Coordinate.ROWS - 1;
-        do{
-            coordinate = new Coordinate(i, column);
+        int row = Coordinate.ROWS - 1;
+        do {
+            coordinate = new Coordinate(row, column);
             error = this.isValidCoordinate(coordinate);
-            i--;
-        }while(!error.isNull());
-        this.colors[i + 1][column] = color;
+            row--;
+        } while (!error.isNull());
+        this.colors[row + 1][column] = color;
         return this.isFinish(coordinate);
     }
 
@@ -50,11 +50,11 @@ class Board {
         return this.colors[coordinate.getRow()][coordinate.getColumn()];
     }
 
-    public GameState isFinish(Coordinate coordinate){
-        if (isConnect4(coordinate)){
+    public GameState isFinish(Coordinate coordinate) {
+        if (isConnect4(coordinate)) {
             return GameState.CONNECT4;
         }
-        if (isFull()){
+        if (isFull()) {
             return GameState.DRAW;
         }
         return GameState.NOT_FINISH;
@@ -64,61 +64,55 @@ class Board {
         assert !coordinate.isNull();
 
         Direction[] directions = Direction.values();
-        boolean connect4 = false;
         int i = 0;
-        while(i < Direction.values().length - 1 && !connect4){
-            connect4 = checkDirection(directions[i], coordinate);
+        while (i < Direction.values().length && !isConnect4(coordinate, directions[i])) {
             i++;
         }
-        return connect4;
+        return isConnect4(coordinate, directions[i]);
     }
 
-    private boolean checkDirection(Direction direction, Coordinate coordinate){
+    private boolean isConnect4(Coordinate coordinate, Direction direction) {
         assert !coordinate.isNull();
 
-        Coordinate originCoordinate = coordinate;
-        int connectedTokens = 1;
-        boolean isDirectionUp = true;
-        boolean noMoreTokensToCheck = false;
-        int j = 0;
-        while(j < NUM_TOKENS_TO_WIN - 1 && connectedTokens < NUM_TOKENS_TO_WIN && !noMoreTokensToCheck){
-            Coordinate nextCoordinate = getNextCoordinate(coordinate, direction, isDirectionUp);
-            if (nextCoordinate.isValid() && this.getColor(coordinate) == this.getColor(nextCoordinate)){
-                connectedTokens++;
-                coordinate = nextCoordinate;
-                j++;
-            } else if(isDirectionUp){
-                isDirectionUp = false;
-                coordinate = originCoordinate;
-                j = 0;
-            } else {
-                noMoreTokensToCheck = true;
-            }
+        int connectedTokens = countConnectedTokens(coordinate, direction);
+        int displacedRow = coordinate.getRow() - direction.getX() * (NUM_TOKENS_TO_WIN - connectedTokens); //a coordenada
+        int displacedColumn = coordinate.getColumn() - direction.getY() * (NUM_TOKENS_TO_WIN - connectedTokens);
+        Coordinate displacedCoordinate = new Coordinate(displacedRow, displacedColumn);
+        if (getColor(displacedCoordinate) == getColor(coordinate)) {
+            connectedTokens = countConnectedTokens(displacedCoordinate, direction);
         }
         return connectedTokens == NUM_TOKENS_TO_WIN;
     }
 
-    private Coordinate getNextCoordinate(Coordinate coordinate, Direction direction, boolean isDirectionUp){
-        int nextRow;
-        int nextColumn;
-        if (isDirectionUp){
-            nextRow = coordinate.getRow() + direction.getX();
-            nextColumn = coordinate.getColumn() + direction.getY();
-        } else {
-            nextRow = coordinate.getRow() - direction.getX();
-            nextColumn = coordinate.getColumn() - direction.getY();
+    private int countConnectedTokens(Coordinate coordinate, Direction direction) {
+        assert !coordinate.isNull();
+
+        int connectedTokens = 1;
+        for (int i = 0; i < NUM_TOKENS_TO_WIN - 1; i++) {
+            Coordinate nextCoordinate = getNextCoordinate(coordinate, direction);
+            if (nextCoordinate.isValid() && this.getColor(coordinate) == this.getColor(nextCoordinate)) {
+                connectedTokens++;
+                coordinate = nextCoordinate;
+            } else {
+                return connectedTokens;
+            }
         }
+        return connectedTokens;
+    }
+
+    private Coordinate getNextCoordinate(Coordinate coordinate, Direction direction) {
+        int nextRow = coordinate.getRow() + direction.getX();
+        int nextColumn = coordinate.getColumn() + direction.getY();
         return new Coordinate(nextRow, nextColumn);
     }
 
-    private boolean isFull(){
-        boolean full;
-        int i = 0;
-        do{
-            full = isOccupied(new Coordinate(0, i));
-            i++;
-        }while(i < Coordinate.ROWS && full);
-        return full;
+    private boolean isFull() {
+        for (int i = 0; i < Coordinate.COLUMNS; i++) {
+            if (colors[0][i] == Color.NULL) {
+                return false;
+            }
+        }
+        return true;
     }
 
     void print() {
@@ -127,7 +121,7 @@ class Board {
         for (int i = 0; i <= Coordinate.ROWS; i++) {
             Message.VERTICAL_LINE.print();
             for (int j = 0; j < Coordinate.COLUMNS; j++) {
-                if(i < Coordinate.ROWS){
+                if (i < Coordinate.ROWS) {
                     this.getColor(new Coordinate(i, j)).print();
                 } else {
                     console.print(j + 1);
