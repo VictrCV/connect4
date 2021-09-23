@@ -41,6 +41,10 @@ public class Console {
         return input;
     }
 
+    public int readInt() {
+        return this.readInt("");
+    }
+
     public char readChar(String title) {
         char charValue = ' ';
         boolean ok = false;

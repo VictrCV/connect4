@@ -34,7 +34,7 @@ class Board {
     }
 
     private Error isValidCoordinate(Coordinate coordinate) {
-        assert coordinate != null;
+        assert !coordinate.isNull();
 
         Error error = Error.NULL;
         if (!this.isEmpty(coordinate)) {
@@ -72,37 +72,51 @@ class Board {
         assert !coordinate.isNull();
 
         Direction[] directions = Direction.values();
-        int i = 0;
         boolean connect4 = false;
+        int i = 0;
         while(i < Direction.values().length - 1 && !connect4){
-            int connectedTokens = 1;
-            int j = 0;
-            boolean changeDirection = false;
-            while(j < NUM_TOKENS_TO_WIN - 1 && connectedTokens < NUM_TOKENS_TO_WIN && !changeDirection){
-                int nextRow = coordinate.getRow() + directions[i].getX();
-                int nextColumn = coordinate.getColumn() + directions[i].getY();
-                Coordinate nextCoordinate = new Coordinate(nextRow, nextColumn);
-                if (this.getColor(coordinate) == this.getColor(nextCoordinate)){
-                    connectedTokens++;
-                } else {
-                    changeDirection = true;
-                }
-            }
+            connect4 = checkDirection(directions[i], coordinate);
+            i++;
+        }
+        return connect4;
+    }
 
-            int j = 0;
-            boolean changeDirection = false;
-            while(j < NUM_TOKENS_TO_WIN - 1 && connectedTokens < NUM_TOKENS_TO_WIN && !changeDirection){
-                int nextRow = coordinate.getRow() - directions[i].getX();
-                int nextColumn = coordinate.getColumn() - directions[i].getY();
-                Coordinate nextCoordinate = new Coordinate(nextRow, nextColumn);
-                if (this.getColor(coordinate) == this.getColor(nextCoordinate)){
-                    connectedTokens++;
-                } else {
-                    changeDirection = true;
-                }
+    private boolean checkDirection(Direction direction, Coordinate coordinate){
+        assert !coordinate.isNull();
+
+        Coordinate originCoordinate = coordinate;
+        int connectedTokens = 1;
+        boolean isDirectionUp = true;
+        boolean noMoreTokensToCheck = false;
+        int j = 0;
+        while(j < NUM_TOKENS_TO_WIN - 1 && connectedTokens < NUM_TOKENS_TO_WIN && !noMoreTokensToCheck){
+            Coordinate nextCoordinate = getNextCoordinate(coordinate, direction, isDirectionUp);
+            if (this.getColor(coordinate) == this.getColor(nextCoordinate)){
+                connectedTokens++;
+                coordinate = nextCoordinate;
+                j++;
+            } else if(isDirectionUp){
+                isDirectionUp = false;
+                coordinate = originCoordinate;
+                j = 0;
+            } else {
+                noMoreTokensToCheck = true;
             }
         }
+        return connectedTokens == NUM_TOKENS_TO_WIN;
+    }
 
+    private Coordinate getNextCoordinate(Coordinate coordinate, Direction direction, boolean isDirectionUp){
+        int nextRow;
+        int nextColumn;
+        if (isDirectionUp){
+            nextRow = coordinate.getRow() + direction.getX();
+            nextColumn = coordinate.getColumn() + direction.getY();
+        } else {
+            nextRow = coordinate.getRow() - direction.getX();
+            nextColumn = coordinate.getColumn() - direction.getY();
+        }
+        return new Coordinate(nextRow, nextColumn);
     }
 
     private boolean isFull(){

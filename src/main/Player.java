@@ -1,5 +1,7 @@
 package main;
 
+import utils.Console;
+
 public class Player {
 
     private Color color;
@@ -14,13 +16,14 @@ public class Player {
     }
 
     public GameState putToken(){
-        Coordinate coordinate;
+        int column;
+        Console console = Console.getInstance();
         Error error;
         do{
-            coordinate = this.readColumn(Message.ENTER_COORDINATE_TO_PUT);
-            error = this.isValidColumn(coordinate.getColumn());
+            column = console.readInt(Message.ENTER_COORDINATE_TO_PUT.toString());
+            error = this.isValidColumn(column);
         }while(!error.isNull());
-        return this.board.putToken(coordinate.getColumn(), this.color);
+        return this.board.putToken(column, this.color);
     }
 
     private Coordinate readColumn(Message message){

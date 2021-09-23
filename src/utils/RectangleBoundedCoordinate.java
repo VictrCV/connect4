@@ -28,7 +28,9 @@ public abstract class RectangleBoundedCoordinate {
         boolean error;
         do {
             coordinate.readColumn(message);
+            System.out.println("antes");
             error = this.getColumnLimits().isIncluded(coordinate.getColumn());
+            System.out.println("después");
             if (error) {
                 Console.getInstance().println(this.getErrorMessage());
             }

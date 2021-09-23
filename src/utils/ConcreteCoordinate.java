@@ -66,7 +66,7 @@ public class ConcreteCoordinate implements Coordinate {
     protected void readColumn(String title) {
         Console console = Console.getInstance();
         console.println(title);
-        this.column = console.readInt(ConcreteCoordinate.COLUMN) - 1;
+        this.column = console.readInt() - 1;
     }
 
     public int getRow() {
