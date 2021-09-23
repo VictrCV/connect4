@@ -6,7 +6,7 @@ enum Message {
     TITLE("--- CONNECT 4 ---"),
     HORIZONTAL_LINE("---------------"),
     VERTICAL_LINE(" | "),
-    ENTER_COORDINATE_TO_PUT("Enter a column to put a token:"),
+    ENTER_COORDINATE_TO_PUT(" enter a column to put a token: "),
     PLAYER_WIN("#player player: You win!!! :-)"),
     DRAW("It's a draw, losers!");
 

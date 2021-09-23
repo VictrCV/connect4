@@ -37,7 +37,7 @@ public abstract class RectangleBoundedCoordinate {
         } while (error);
     }
 
-    private boolean isValid() {
+    public boolean isValid() {
         assert !this.coordinate.isNull();
 
         ConcreteCoordinate concreteCoordinate = (ConcreteCoordinate) this.coordinate;

@@ -20,23 +20,18 @@ public class Player {
         Console console = Console.getInstance();
         Error error;
         do{
-            column = console.readInt(Message.ENTER_COORDINATE_TO_PUT.toString());
+            column = console.readInt(this.color + Message.ENTER_COORDINATE_TO_PUT.toString()) - 1;
             error = this.isValidColumn(column);
         }while(!error.isNull());
         return this.board.putToken(column, this.color);
     }
 
-    private Coordinate readColumn(Message message){
-        assert message != null;
-
-        Coordinate coordinate = new Coordinate();
-        coordinate.readColumn(message.toString());
-        return coordinate;
-    }
-
     private Error isValidColumn(int column) {
         Error error = Error.NULL;
-        if (!this.board.isEmpty(new Coordinate(0, column))) {
+        Coordinate coordinate = new Coordinate(0, column);
+        if (!coordinate.isValid()) {
+            error = Error.WRONG_COLUMN;
+        } else if (!this.board.isEmpty(coordinate)){
             error = Error.NOT_EMPTY;
         }
         error.println();

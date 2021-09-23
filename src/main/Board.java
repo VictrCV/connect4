@@ -1,8 +1,5 @@
 package main;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import utils.Console;
 import utils.Direction;
 
@@ -40,7 +37,6 @@ class Board {
         if (!this.isEmpty(coordinate)) {
             error = Error.NOT_EMPTY;
         }
-        error.println();
         return error;
     }
 
@@ -91,7 +87,7 @@ class Board {
         int j = 0;
         while(j < NUM_TOKENS_TO_WIN - 1 && connectedTokens < NUM_TOKENS_TO_WIN && !noMoreTokensToCheck){
             Coordinate nextCoordinate = getNextCoordinate(coordinate, direction, isDirectionUp);
-            if (this.getColor(coordinate) == this.getColor(nextCoordinate)){
+            if (nextCoordinate.isValid() && this.getColor(coordinate) == this.getColor(nextCoordinate)){
                 connectedTokens++;
                 coordinate = nextCoordinate;
                 j++;
@@ -129,29 +125,20 @@ class Board {
         return full;
     }
 
-    List<Coordinate> getCoordinates(Color color) {
-        assert !color.isNull();
-
-        List<Coordinate> coordinates = new ArrayList<>();
-        for (int i = 0; i < Coordinate.ROWS; i++) {
-            for (int j = 0; j < Coordinate.COLUMNS; j++) {
-                if (this.getColor(new Coordinate(i,j)) == color) {
-                    coordinates.add(new Coordinate(i, j));
-                }
-            }
-        }
-        return coordinates;
-    }
-
     void print() {
+        Console console = Console.getInstance();
         Message.HORIZONTAL_LINE.println();
-        for (int i = 0; i < Coordinate.ROWS; i++) {
+        for (int i = 0; i <= Coordinate.ROWS; i++) {
             Message.VERTICAL_LINE.print();
             for (int j = 0; j < Coordinate.COLUMNS; j++) {
-                this.getColor(new Coordinate(i, j)).print();
+                if(i < Coordinate.ROWS){
+                    this.getColor(new Coordinate(i, j)).print();
+                } else {
+                    console.print(j + 1);
+                }
                 Message.VERTICAL_LINE.print();
             }
-            Console.getInstance().println();
+            console.println();
         }
         Message.HORIZONTAL_LINE.println();
     }
