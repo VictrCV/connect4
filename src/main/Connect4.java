@@ -34,15 +34,11 @@ public class Connect4 {
         }
     }
 
-    private Color getActiveColor() {
-        return this.players[this.activePlayer].getColor();
-    }
-
     private int getNextPlayer(){
         return (this.activePlayer+1) % NUM_PLAYERS;
     }
 
-    public static void main(String arg[]){
+    public static void main(String[] arg){
         new Connect4().play();
     }
 }

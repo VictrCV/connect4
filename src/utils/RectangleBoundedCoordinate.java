@@ -1,7 +1,5 @@
 package utils;
 
-import java.util.Random;
-
 public abstract class RectangleBoundedCoordinate {
 
     private Coordinate coordinate;
@@ -18,23 +16,6 @@ public abstract class RectangleBoundedCoordinate {
         this.coordinate = new ConcreteCoordinate(row, column);
 
         assert this.isValid();
-    }
-
-    public void readColumn(String message) {
-        assert message != null;
-
-        this.coordinate = new ConcreteCoordinate();
-        ConcreteCoordinate coordinate = (ConcreteCoordinate) this.coordinate;
-        boolean error;
-        do {
-            coordinate.readColumn(message);
-            System.out.println("antes");
-            error = this.getColumnLimits().isIncluded(coordinate.getColumn());
-            System.out.println("después");
-            if (error) {
-                Console.getInstance().println(this.getErrorMessage());
-            }
-        } while (error);
     }
 
     public boolean isValid() {
@@ -56,10 +37,6 @@ public abstract class RectangleBoundedCoordinate {
     protected abstract int getMaxRows();
 
     protected abstract int getMaxColumns();
-
-    public Direction getDirection(RectangleBoundedCoordinate coordinate) {
-        return this.coordinate.getDirection(coordinate.coordinate);
-    }
 
     protected abstract String getErrorMessage();
 

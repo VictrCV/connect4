@@ -19,6 +19,7 @@ public class Console {
         try {
             input = this.bufferedReader.readLine();
         } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return input;
     }

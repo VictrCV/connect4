@@ -34,24 +34,20 @@ class Board {
         assert !coordinate.isNull();
 
         Error error = Error.NULL;
-        if (!this.isEmpty(coordinate)) {
+        if (this.isOccupied(coordinate)) {
             error = Error.NOT_EMPTY;
         }
         return error;
+    }
+
+    boolean isOccupied(Coordinate coordinate) {
+        return this.getColor(coordinate) != Color.NULL;
     }
 
     private Color getColor(Coordinate coordinate) {
         assert !coordinate.isNull();
 
         return this.colors[coordinate.getRow()][coordinate.getColumn()];
-    }
-
-    boolean isOccupied(Coordinate coordinate, Color color) {
-        return this.getColor(coordinate) == color;
-    }
-
-    boolean isEmpty(Coordinate coordinate) {
-        return this.isOccupied(coordinate, Color.NULL);
     }
 
     public GameState isFinish(Coordinate coordinate){
@@ -119,7 +115,7 @@ class Board {
         boolean full;
         int i = 0;
         do{
-            full = !isEmpty(new Coordinate(0, i));
+            full = isOccupied(new Coordinate(0, i));
             i++;
         }while(i < Coordinate.ROWS && full);
         return full;

@@ -24,8 +24,4 @@ public enum Direction {
         return y;
     }
 
-    public boolean isNull() {
-        return this == Direction.NULL;
-    }
-
 }

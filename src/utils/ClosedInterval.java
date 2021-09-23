@@ -32,9 +32,7 @@ public class ClosedInterval {
         ClosedInterval other = (ClosedInterval) obj;
         if (min != other.min)
             return false;
-        if (max != other.max)
-            return false;
-        return true;
+        return max == other.max;
     }
 
 }

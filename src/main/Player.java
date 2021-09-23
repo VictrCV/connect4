@@ -31,7 +31,7 @@ public class Player {
         Coordinate coordinate = new Coordinate(0, column);
         if (!coordinate.isValid()) {
             error = Error.WRONG_COLUMN;
-        } else if (!this.board.isEmpty(coordinate)){
+        } else if (this.board.isOccupied(coordinate)){
             error = Error.NOT_EMPTY;
         }
         error.println();
@@ -42,7 +42,4 @@ public class Player {
         Message.PLAYER_WIN.println(this.color.name());
     }
 
-    public Color getColor(){
-        return this.color;
-    }
 }
