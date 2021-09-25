@@ -66,11 +66,12 @@ public class Board {
         assert !coordinate.isNull();
 
         Direction[] directions = Direction.values();
-        int i = 0;
-        while (i < Direction.values().length && !isConnect4(coordinate, directions[i])) {
-            i++;
+        for (int i = 0; i <  Direction.values().length; i++){
+            if(isConnect4(coordinate, directions[i])){
+                return true;
+            }
         }
-        return isConnect4(coordinate, directions[i]);
+        return false;
     }
 
     private boolean isConnect4(Coordinate coordinate, Direction direction) {
@@ -78,7 +79,7 @@ public class Board {
 
         int connectedTokens = countConnectedTokens(coordinate, direction);
         Coordinate displacedCoordinate = coordinate.displace(direction, NUM_TOKENS_TO_WIN - connectedTokens);
-        if (getColor(displacedCoordinate) == getColor(coordinate)) {
+        if (displacedCoordinate.isValid() && getColor(displacedCoordinate) == getColor(coordinate)) {
             connectedTokens = countConnectedTokens(displacedCoordinate, direction);
         }
         return connectedTokens == NUM_TOKENS_TO_WIN;
