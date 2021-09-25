@@ -1,8 +1,8 @@
-package main;
+package main.views;
 
-import utils.Console;
+import utils.views.Console;
 
-enum Message {
+public enum Message {
     TITLE("--- CONNECT 4 ---"),
     HORIZONTAL_LINE("---------------"),
     VERTICAL_LINE(" | "),
@@ -16,15 +16,15 @@ enum Message {
         this.message = message;
     }
 
-    void print() {
+    public void print() {
         Console.getInstance().print(this.message);
     }
 
-    void println() {
+    public void println() {
         Console.getInstance().println(this.message);
     }
 
-    void println(String player) {
+    public void println(String player) {
         assert this == Message.PLAYER_WIN;
 
         Console.getInstance().println(this.message.replaceAll("#player", "" + player));

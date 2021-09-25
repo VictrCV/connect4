@@ -1,18 +1,21 @@
-package main;
+package main.types;
 
-import utils.RectangleBoundedCoordinate;
+import utils.models.Direction;
+import utils.models.RectangleBoundedCoordinate;
 
-class Coordinate extends RectangleBoundedCoordinate {
+public class Coordinate extends RectangleBoundedCoordinate {
 
     public static final int ROWS = 6;
     public static final int COLUMNS = 7;
 
-    Coordinate() {
-        super();
+    public Coordinate(int row, int column) {
+        super(row, column);
     }
 
-    Coordinate(int row, int column) {
-        super(row, column);
+    public Coordinate displace(Direction direction, int magnitude) {
+        int displacedRow = this.getRow() - direction.getX() * magnitude;
+        int displacedColumn = this.getColumn() - direction.getY() * magnitude;
+        return new Coordinate(displacedRow, displacedColumn);
     }
 
     @Override
@@ -23,11 +26,6 @@ class Coordinate extends RectangleBoundedCoordinate {
     @Override
     protected int getMaxColumns() {
         return Coordinate.COLUMNS;
-    }
-
-    @Override
-    protected String getErrorMessage() {
-        return Error.WRONG_COLUMN.toString();
     }
 
     @Override

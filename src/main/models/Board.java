@@ -1,14 +1,16 @@
-package main;
+package main.models;
 
-import utils.Console;
-import utils.Direction;
+import main.types.Color;
+import main.types.Coordinate;
+import main.types.GameState;
+import utils.models.Direction;
 
-class Board {
+public class Board {
 
     static final int NUM_TOKENS_TO_WIN = 4;
     private Color[][] colors;
 
-    Board() {
+    public Board() {
         this.colors = new Color[Coordinate.ROWS][Coordinate.COLUMNS];
         for (int i = 0; i < Coordinate.ROWS; i++) {
             for (int j = 0; j < Coordinate.COLUMNS; j++) {
@@ -17,9 +19,9 @@ class Board {
         }
     }
 
-    GameState putToken(int column, Color color) {
+    public GameState putToken(int column, Color color) {
         Coordinate coordinate;
-        Error error;
+        main.types.Error error;
         int row = Coordinate.ROWS - 1;
         do {
             coordinate = new Coordinate(row, column);
@@ -30,21 +32,21 @@ class Board {
         return this.isFinish(coordinate);
     }
 
-    private Error isValidCoordinate(Coordinate coordinate) {
+    private main.types.Error isValidCoordinate(Coordinate coordinate) {
         assert !coordinate.isNull();
 
-        Error error = Error.NULL;
+        main.types.Error error = main.types.Error.NULL;
         if (this.isOccupied(coordinate)) {
-            error = Error.NOT_EMPTY;
+            error = main.types.Error.NOT_EMPTY;
         }
         return error;
     }
 
-    boolean isOccupied(Coordinate coordinate) {
+    public boolean isOccupied(Coordinate coordinate) {
         return this.getColor(coordinate) != Color.NULL;
     }
 
-    private Color getColor(Coordinate coordinate) {
+    public Color getColor(Coordinate coordinate) {
         assert !coordinate.isNull();
 
         return this.colors[coordinate.getRow()][coordinate.getColumn()];
@@ -60,7 +62,7 @@ class Board {
         return GameState.NOT_FINISH;
     }
 
-    boolean isConnect4(Coordinate coordinate) {
+    private boolean isConnect4(Coordinate coordinate) {
         assert !coordinate.isNull();
 
         Direction[] directions = Direction.values();
@@ -75,9 +77,7 @@ class Board {
         assert !coordinate.isNull();
 
         int connectedTokens = countConnectedTokens(coordinate, direction);
-        int displacedRow = coordinate.getRow() - direction.getX() * (NUM_TOKENS_TO_WIN - connectedTokens); //a coordenada
-        int displacedColumn = coordinate.getColumn() - direction.getY() * (NUM_TOKENS_TO_WIN - connectedTokens);
-        Coordinate displacedCoordinate = new Coordinate(displacedRow, displacedColumn);
+        Coordinate displacedCoordinate = coordinate.displace(direction, NUM_TOKENS_TO_WIN - connectedTokens);
         if (getColor(displacedCoordinate) == getColor(coordinate)) {
             connectedTokens = countConnectedTokens(displacedCoordinate, direction);
         }
@@ -115,22 +115,5 @@ class Board {
         return true;
     }
 
-    void print() {
-        Console console = Console.getInstance();
-        Message.HORIZONTAL_LINE.println();
-        for (int i = 0; i <= Coordinate.ROWS; i++) {
-            Message.VERTICAL_LINE.print();
-            for (int j = 0; j < Coordinate.COLUMNS; j++) {
-                if (i < Coordinate.ROWS) {
-                    this.getColor(new Coordinate(i, j)).print();
-                } else {
-                    console.print(j + 1);
-                }
-                Message.VERTICAL_LINE.print();
-            }
-            console.println();
-        }
-        Message.HORIZONTAL_LINE.println();
-    }
 
 }

@@ -1,4 +1,4 @@
-package utils;
+package utils.models;
 
 public abstract class RectangleBoundedCoordinate {
 
@@ -37,8 +37,6 @@ public abstract class RectangleBoundedCoordinate {
     protected abstract int getMaxRows();
 
     protected abstract int getMaxColumns();
-
-    protected abstract String getErrorMessage();
 
     public int getRow() {
         assert !this.coordinate.isNull();

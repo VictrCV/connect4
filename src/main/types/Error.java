@@ -1,8 +1,6 @@
-package main;
+package main.types;
 
-import utils.Console;
-
-enum Error {
+public enum Error {
 
     NOT_EMPTY("The column is full"),
     WRONG_COLUMN("The column is wrong"),
@@ -17,14 +15,12 @@ enum Error {
         this.message = message;
     }
 
-    void println() {
-        if (!this.isNull()) {
-            Console.getInstance().println(this.message);
-        }
-    }
-
     public boolean isNull() {
         return this == Error.NULL;
+    }
+
+    public String getMessage(){
+        return this.message;
     }
 }
 

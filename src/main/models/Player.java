@@ -1,6 +1,12 @@
-package main;
+package main.models;
 
-import utils.Console;
+import main.types.Color;
+import main.types.Coordinate;
+import main.types.Error;
+import main.types.GameState;
+import main.views.ErrorView;
+import main.views.Message;
+import utils.views.Console;
 
 public class Player {
 
@@ -16,13 +22,15 @@ public class Player {
     }
 
     public GameState putToken() {
-        int column;
+
         Console console = Console.getInstance();
+        ErrorView errorView = new ErrorView();
         Error error;
+        int column;
         do {
             column = console.readInt(this.color + Message.ENTER_COORDINATE_TO_PUT.toString()) - 1;
             error = this.isValidColumn(column);
-            error.println();
+            errorView.println(error);
         } while (!error.isNull());
         return this.board.putToken(column, this.color);
     }
@@ -38,8 +46,8 @@ public class Player {
         return Error.NULL;
     }
 
-    public void printWinner() {
-        Message.PLAYER_WIN.println(this.color.name());
+    public Color getColor() {
+        return color;
     }
 
 }
