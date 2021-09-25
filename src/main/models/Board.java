@@ -3,6 +3,7 @@ package main.models;
 import main.types.Color;
 import main.types.Coordinate;
 import main.types.GameState;
+import main.types.Error;
 import utils.models.Direction;
 
 public class Board {
@@ -21,7 +22,7 @@ public class Board {
 
     public GameState putToken(int column, Color color) {
         Coordinate coordinate;
-        main.types.Error error;
+        Error error;
         int row = Coordinate.ROWS - 1;
         do {
             coordinate = new Coordinate(row, column);
@@ -32,12 +33,12 @@ public class Board {
         return this.isFinish(coordinate);
     }
 
-    private main.types.Error isValidCoordinate(Coordinate coordinate) {
+    private Error isValidCoordinate(Coordinate coordinate) {
         assert !coordinate.isNull();
 
-        main.types.Error error = main.types.Error.NULL;
+        Error error = Error.NULL;
         if (this.isOccupied(coordinate)) {
-            error = main.types.Error.NOT_EMPTY;
+            error = Error.NOT_EMPTY;
         }
         return error;
     }
@@ -66,8 +67,8 @@ public class Board {
         assert !coordinate.isNull();
 
         Direction[] directions = Direction.values();
-        for (int i = 0; i <  Direction.values().length; i++){
-            if(isConnect4(coordinate, directions[i])){
+        for (int i = 0; i < Direction.values().length; i++) {
+            if (isConnect4(coordinate, directions[i])) {
                 return true;
             }
         }

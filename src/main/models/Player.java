@@ -24,13 +24,12 @@ public class Player {
     public GameState putToken() {
 
         Console console = Console.getInstance();
-        ErrorView errorView = new ErrorView();
         Error error;
         int column;
         do {
             column = console.readInt(this.color + Message.ENTER_COORDINATE_TO_PUT.toString()) - 1;
             error = this.isValidColumn(column);
-            errorView.println(error);
+            new ErrorView().println(error);
         } while (!error.isNull());
         return this.board.putToken(column, this.color);
     }

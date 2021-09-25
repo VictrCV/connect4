@@ -19,7 +19,7 @@ public enum Error {
         return this == Error.NULL;
     }
 
-    public String getMessage(){
+    public String getMessage() {
         return this.message;
     }
 }
